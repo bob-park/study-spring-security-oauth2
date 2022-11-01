@@ -1,0 +1,13 @@
+## server
+server:
+  port: 8080
+
+## spring
+
+
+## logging
+logging:
+  level:
+    root: info
+    web: debug
+    com.bob: debug

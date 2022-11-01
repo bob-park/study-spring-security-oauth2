@@ -1,0 +1,8 @@
+rootProject.name = 'study-spring-security-oauth2'
+
+
+/* modules */
+include 'basic-security'
+
+include 'cors-1'
+include 'cors-2'
