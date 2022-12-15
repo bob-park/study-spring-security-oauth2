@@ -16,6 +16,8 @@ public class OAuth2ClientConfiguration {
         http.authorizeHttpRequests(requests ->
             requests
                 .antMatchers("/loginPage").permitAll()
+                .antMatchers("/user").permitAll()
+                .antMatchers("/oidc").permitAll()
                 .anyRequest().authenticated());
 
 //        http.oauth2Login(oauth2 -> oauth2.loginPage("/loginPage"));

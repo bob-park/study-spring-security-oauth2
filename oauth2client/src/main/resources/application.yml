@@ -14,20 +14,20 @@ spring:
             client-secret: X3fGojFQlwZqQY4wwMCnzfSAqCdKSxfk
             client-name: oauth2-client-app
             redirect-uri: http://localhost:8081/login/oauth2/code/keycloak
-#            authorization-grant-type: authorization_code
-#            client-authentication-method: client_secret_basic
-#            scope:
-#              - openid
-#              - email
-#              - profile
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_basic
+            scope:
+              - openid
+              - email
+              - profile
         provider:
           keycloak:
-#            authorization-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/auth
-#            token-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/token
+            authorization-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/auth
+            token-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/token
             issuer-uri: http://localhost:8080/realms/oauth2
-#            user-info-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/userinfo
-#            jwk-set-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/certs
-#            user-name-attribute: preferred_username
+            user-info-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/userinfo
+            jwk-set-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/certs
+            user-name-attribute: preferred_username
 
 ## logging
 logging:
