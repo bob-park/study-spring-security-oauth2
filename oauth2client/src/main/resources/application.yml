@@ -27,7 +27,7 @@ spring:
             issuer-uri: http://localhost:8080/realms/oauth2
             user-info-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/userinfo
             jwk-set-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/certs
-            user-name-attribute: preferred_username
+            user-name-attribute: preferred_username # keycloak 에서 사용자 이름을 검색할 수 있는 기본 user name attibute
 
 ## logging
 logging:
