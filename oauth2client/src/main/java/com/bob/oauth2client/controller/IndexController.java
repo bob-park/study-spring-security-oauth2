@@ -3,6 +3,13 @@ package com.bob.oauth2client.controller;
 import java.time.Instant;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -13,13 +20,15 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Maps;
-import lombok.RequiredArgsConstructor;
 
+
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class IndexController {
@@ -34,7 +43,7 @@ public class IndexController {
     /*
      * Authorization Server 에서 해주지만, 예제로 어떻게 이루어지는지 확인용
      */
-    @GetMapping(path = "user")
+//    @GetMapping(path = "user")
     public OAuth2User user(String accessToken) {
 
         ClientRegistration clientRegistration =
@@ -52,7 +61,7 @@ public class IndexController {
 
     }
 
-    @GetMapping(path = "oidc")
+//    @GetMapping(path = "oidc")
     public OAuth2User oidc(String accessToken, String idToken) {
 
         ClientRegistration clientRegistration =
@@ -77,6 +86,30 @@ public class IndexController {
 
         return oAuth2UserService.loadUser(oidcUserRequest);
 
+    }
+
+    @GetMapping(path = "/user")
+    public OAuth2User user(Authentication authentication) {
+
+        // case 1
+        OAuth2AuthenticationToken auth1 =
+            (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        // case 2
+        OAuth2AuthenticationToken auth2 = (OAuth2AuthenticationToken) authentication;
+
+        return auth2.getPrincipal();
+    }
+
+    @GetMapping(path = "/oauth2user")
+    public OAuth2User oAuth2User(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        log.debug("oAuth2User=" + oAuth2User);
+        return oAuth2User;
+    }
+
+    @GetMapping(path = "/oidcuser")
+    public OidcUser oidcUser(@AuthenticationPrincipal OidcUser oidcUser) {
+        log.debug("oidcUser=" + oidcUser);
+        return oidcUser;
     }
 
 }
