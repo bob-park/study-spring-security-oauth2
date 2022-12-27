@@ -25,16 +25,26 @@ public class OAuth2ClientConfiguration {
 //                .antMatchers("/loginPage").permitAll()
 //                .antMatchers("/user").permitAll()
 //                .antMatchers("/oidc").permitAll()
+                .antMatchers("/login").permitAll()
                 .anyRequest().authenticated());
 
 //        http.oauth2Login(oauth2 -> oauth2.loginPage("/loginPage"));
-        http.oauth2Login(Customizer.withDefaults());
+//        http.oauth2Login(Customizer.withDefaults());
 
-        http.logout()
-            .logoutSuccessHandler(oidcLogoutSuccessHandler())
-            .invalidateHttpSession(true)
-            .clearAuthentication(true)
-            .deleteCookies("JSESSIONID");
+//        http.logout()
+//            .logoutSuccessHandler(oidcLogoutSuccessHandler())
+//            .invalidateHttpSession(true)
+//            .clearAuthentication(true)
+//            .deleteCookies("JSESSIONID");
+
+        http.oauth2Login(oauth2 ->
+            oauth2.loginPage("/login")
+                // ! redirectionEndpointConfig.baseUri() 와 동일한 결과를 가져오지만, redirectionEndpointConfig.baseUri() 의 우선순위가 높다.
+                .loginProcessingUrl("/login/v2/oauth2/code/*")
+                .authorizationEndpoint(authorizationEndpointConfig ->
+                    authorizationEndpointConfig.baseUri("/oauth2/v1/authorization"))
+                .redirectionEndpoint(redirectionEndpointConfig ->
+                    redirectionEndpointConfig.baseUri("/login/v1/oauth2/code/*")));
 
         return http.build();
     }
