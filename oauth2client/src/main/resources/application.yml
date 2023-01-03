@@ -9,40 +9,51 @@ spring:
     oauth2:
       client:
         registration:
-          keycloak1:
+          ## oauth2Login()
+#          keycloak1:
+#            provider: keycloak
+#            client-id: oauth2-client-app
+#            client-secret: X3fGojFQlwZqQY4wwMCnzfSAqCdKSxfk
+#            client-name: oauth2-client-app
+#            redirect-uri: http://localhost:8081/login/oauth2/code/keycloak
+#            authorization-grant-type: authorization_code
+#            client-authentication-method: client_secret_basic
+#            scope:
+#              - openid
+#              - profile
+#          keycloakWithPKCE:
+#            provider: keycloak
+#            client-id: oauth2-client-app2
+#            client-secret: nM0L6cTSv4gksdowR28xq59rfcvBA2jl
+#            client-name: oauth2-client-app2
+#            redirect-uri: http://localhost:8081/login/oauth2/code/keycloak
+#            authorization-grant-type: authorization_code
+#            # 기본적으로 none 으로 해야 PKCE 로 인증됨
+#            # 하지만, PKCE 인증시 client_secret 이 빠진채로 인증을 처리하려고함
+#            # 정상적이라면, clientAuthenticationMethod 는 반드시 client_secret_basic 이어야 하며, PKCE 기능을 넣어야되므로, OAuth2AuthorizationRequestResolver 를 구현해야함
+##            client-authentication-method: none
+#            client-authentication-method: client_secret_basic
+#            scope:
+#              - openid
+#              - profile
+#          keycloak2:
+#            provider: keycloak
+#            client-id: oauth2-client-app3
+#            client-name: oauth2-client-app3
+#            redirect-uri: http://localhost:8081/home
+#            authorization-grant-type: implicit
+#            client-authentication-method: none
+#            scope:
+#              - openid
+#              - profile
+          keycloak:
             provider: keycloak
             client-id: oauth2-client-app
             client-secret: X3fGojFQlwZqQY4wwMCnzfSAqCdKSxfk
             client-name: oauth2-client-app
-            redirect-uri: http://localhost:8081/login/oauth2/code/keycloak
+            redirect-uri: http://localhost:8081/client
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_basic
-            scope:
-              - openid
-              - profile
-
-          keycloakWithPKCE:
-            provider: keycloak
-            client-id: oauth2-client-app2
-            client-secret: nM0L6cTSv4gksdowR28xq59rfcvBA2jl
-            client-name: oauth2-client-app2
-            redirect-uri: http://localhost:8081/login/oauth2/code/keycloak
-            authorization-grant-type: authorization_code
-            # 기본적으로 none 으로 해야 PKCE 로 인증됨
-            # 하지만, PKCE 인증시 client_secret 이 빠진채로 인증을 처리하려고함
-            # 정상적이라면, clientAuthenticationMethod 는 반드시 client_secret_basic 이어야 하며, PKCE 기능을 넣어야되므로, OAuth2AuthorizationRequestResolver 를 구현해야함
-#            client-authentication-method: none
-            client-authentication-method: client_secret_basic
-            scope:
-              - openid
-              - profile
-          keycloak2:
-            provider: keycloak
-            client-id: oauth2-client-app3
-            client-name: oauth2-client-app3
-            redirect-uri: http://localhost:8081/home
-            authorization-grant-type: implicit
-            client-authentication-method: none
             scope:
               - openid
               - profile
