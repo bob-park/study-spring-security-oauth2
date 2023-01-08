@@ -69,33 +69,38 @@ public class LoginController {
         // client 는 인가를 받은 상태지만, user 는 아직 인증받지 않은 상태이므로 anonymousUser 가 됨
         OAuth2AuthorizedClient authorizedClient = authorizedClientManager.authorize(authorizeRequest);
 
-        if (authorizedClient != null) {
-            // 사용자 정보를 가져와 인증처리
-            OAuth2UserService<OAuth2UserRequest, OAuth2User> userService = new DefaultOAuth2UserService();
+        // * Resource Owner Password 방식
+//        if (authorizedClient != null) {
+//            // 사용자 정보를 가져와 인증처리
+//            OAuth2UserService<OAuth2UserRequest, OAuth2User> userService = new DefaultOAuth2UserService();
+//
+//            ClientRegistration clientRegistration = authorizedClient.getClientRegistration();
+//            OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
+//
+//            OAuth2UserRequest userRequest = new OAuth2UserRequest(clientRegistration, accessToken);
+//
+//            OAuth2User oAuth2User = userService.loadUser(userRequest);
+//
+//            // 인가 서버로부터 받는 Authority 를 custom 하여 맵핑할 수 있음
+//            SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
+//            authorityMapper.setPrefix("SYSTEM_"); // 기본은 SCOPE_
+//
+//            Set<GrantedAuthority> authorities = authorityMapper.mapAuthorities(oAuth2User.getAuthorities());
+//
+//            OAuth2AuthenticationToken authenticationToken =
+//                new OAuth2AuthenticationToken(oAuth2User,
+//                    authorities,
+//                    clientRegistration.getRegistrationId());
+//
+//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//
+//            model.addAttribute("oAuth2AuthenticationToken", authenticationToken);
+//
+//        }
 
-            ClientRegistration clientRegistration = authorizedClient.getClientRegistration();
-            OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
-
-            OAuth2UserRequest userRequest = new OAuth2UserRequest(clientRegistration, accessToken);
-
-            OAuth2User oAuth2User = userService.loadUser(userRequest);
-
-            // 인가 서버로부터 받는 Authority 를 custom 하여 맵핑할 수 있음
-            SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
-            authorityMapper.setPrefix("SYSTEM_"); // 기본은 SCOPE_
-
-            Set<GrantedAuthority> authorities = authorityMapper.mapAuthorities(oAuth2User.getAuthorities());
-
-            OAuth2AuthenticationToken authenticationToken =
-                new OAuth2AuthenticationToken(oAuth2User,
-                    authorities,
-                    clientRegistration.getRegistrationId());
-
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-            model.addAttribute("oAuth2AuthenticationToken", authenticationToken);
-
-        }
+        // ! Client Credentials 방식은 client 가 인가 처리만 받으면 완료
+        // 별도의 인증처리를 받지 않았기 때문에, logout 에 접근할 수 없음
+        model.addAttribute("authorizedClient", authorizedClient.getAccessToken().getTokenValue());
 
         return "home";
     }
