@@ -8,3 +8,4 @@ include 'cors-1'
 include 'cors-2'
 
 include 'oauth2client'
+include 'oauth2client-2'

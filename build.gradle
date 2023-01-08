@@ -11,13 +11,13 @@ buildscript {
             url "https://plugins.gradle.org/m2/"  //gradle 플러그인 URL
         }
     }
+
     dependencies {
-        dependencies {
-            classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-            classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
-            classpath 'gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:2.2.4'
-        }
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
+        classpath 'gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:2.2.4'
     }
+
 }
 
 allprojects {
