@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 public class AppConfiguration {
 
     @Bean
-    public OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager(
+    public DefaultOAuth2AuthorizedClientManager oAuth2AuthorizedClientManager(
         ClientRegistrationRepository clientRegistrationRepository,
         OAuth2AuthorizedClientRepository authorizedClientRepository) {
 
