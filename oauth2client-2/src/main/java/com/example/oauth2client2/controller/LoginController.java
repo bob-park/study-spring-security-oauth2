@@ -1,6 +1,7 @@
 package com.example.oauth2client2.controller;
 
-import java.util.Set;
+import java.time.Clock;
+import java.time.Duration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,21 +9,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationSuccessHandler;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +31,9 @@ public class LoginController {
 
     private final DefaultOAuth2AuthorizedClientManager authorizedClientManager;
     private final OAuth2AuthorizedClientRepository authorizedClientRepository;
+
+    private final Duration clockSkew = Duration.ofSeconds(3_600);
+    private final Clock clock = Clock.systemUTC();
 
     @GetMapping(path = "oauth2Login")
     public String oauth2Login(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -98,9 +96,41 @@ public class LoginController {
 //
 //        }
 
+        // * Refresh Token Flow
+        // 권한 부여 타입을 변경하지 않고 실행
+//        if (authorizedClient != null
+//            && hasTokenExpired(authorizedClient.getAccessToken()) && authorizedClient.getRefreshToken() != null) {
+//            authorizedClientManager.authorize(authorizeRequest);
+//        }
+
+        // 권한 부여 타입을 변경하고 실행
+        if (authorizedClient != null
+            && hasTokenExpired(authorizedClient.getAccessToken()) && authorizedClient.getRefreshToken() != null) {
+            ClientRegistration clientRegistration =
+                ClientRegistration.withClientRegistration(authorizedClient.getClientRegistration())
+                    .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                    .build();
+
+            OAuth2AuthorizedClient authorizedClient2 =
+                new OAuth2AuthorizedClient(clientRegistration,
+                    authorizedClient.getPrincipalName(),
+                    authorizedClient.getAccessToken(),
+                    authorizedClient.getRefreshToken());
+
+            OAuth2AuthorizeRequest authorizeRequest2 =
+                OAuth2AuthorizeRequest.withAuthorizedClient(authorizedClient2)
+                    .principal(authentication)
+                    .attribute(HttpServletRequest.class.getName(), request)
+                    .attribute(HttpServletResponse.class.getName(), response)
+                    .build();
+
+            authorizedClientManager.authorize(authorizeRequest2);
+        }
+
         // ! Client Credentials 방식은 client 가 인가 처리만 받으면 완료
         // 별도의 인증처리를 받지 않았기 때문에, logout 에 접근할 수 없음
-        model.addAttribute("authorizedClient", authorizedClient.getAccessToken().getTokenValue());
+        model.addAttribute("accessToken", authorizedClient.getAccessToken().getTokenValue());
+        model.addAttribute("refreshToken", authorizedClient.getRefreshToken().getTokenValue());
 
         return "home";
     }
@@ -114,4 +144,8 @@ public class LoginController {
         return "redirect:/";
     }
 
+
+    private boolean hasTokenExpired(OAuth2Token token) {
+        return this.clock.instant().isAfter(token.getExpiresAt().minus(this.clockSkew));
+    }
 }

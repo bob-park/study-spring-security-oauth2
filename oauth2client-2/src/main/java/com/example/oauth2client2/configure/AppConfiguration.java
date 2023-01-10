@@ -1,5 +1,6 @@
 package com.example.oauth2client2.configure;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -31,9 +32,9 @@ public class AppConfiguration {
         OAuth2AuthorizedClientProvider auth2AuthorizedClientProvider =
             OAuth2AuthorizedClientProviderBuilder.builder()
                 .authorizationCode()
-                .password()
+                .password(password -> password.clockSkew(Duration.ofSeconds(3_600)))
                 .clientCredentials()
-                .refreshToken()
+                .refreshToken(refresh -> refresh.clockSkew(Duration.ofSeconds(3_600)))
                 .build();
 
         DefaultOAuth2AuthorizedClientManager auth2AuthorizedClientManager =

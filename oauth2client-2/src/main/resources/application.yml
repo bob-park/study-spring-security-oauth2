@@ -20,25 +20,27 @@ spring:
 #            scope:
 #              - openid
 #              - profile
+
         ## password
-#          keycloak:
-#            provider: keycloak
-#            client-id: oauth2-client-app
-#            client-secret: X3fGojFQlwZqQY4wwMCnzfSAqCdKSxfk
-#            client-name: oauth2-client-app
-#            authorization-grant-type: password
-#            client-authentication-method: client_secret_basic
-#            scope:
-#              - openid
-#              - profile
-          ## client credentials
           keycloak:
             provider: keycloak
             client-id: oauth2-client-app
             client-secret: X3fGojFQlwZqQY4wwMCnzfSAqCdKSxfk
             client-name: oauth2-client-app
-            authorization-grant-type: client_credentials
+            authorization-grant-type: password
             client-authentication-method: client_secret_basic
+            scope:
+              - openid
+              - profile
+
+          ## client credentials
+#          keycloak:
+#            provider: keycloak
+#            client-id: oauth2-client-app
+#            client-secret: X3fGojFQlwZqQY4wwMCnzfSAqCdKSxfk
+#            client-name: oauth2-client-app
+#            authorization-grant-type: client_credentials
+#            client-authentication-method: client_secret_basic
         provider:
           keycloak:
             authorization-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/auth
