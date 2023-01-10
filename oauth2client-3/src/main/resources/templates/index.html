@@ -21,6 +21,8 @@
   <p><input type="button" onclick="authorizationCode()" value="AuthorizationCode Grant"/></p>
   <p><a th:href="@{/oauth2Login(username='user', password='12345')}">Password Flow Login</a></p>
   <p><a th:href="@{/oauth2Login}">Client Credentials Login</a></p>
+
+  <p><a th:href="@{/v2/oauth2Login(username='user', password='12345')}">V2 Password Flow Login</a></p>
 </form>
 </body>
 </html>
