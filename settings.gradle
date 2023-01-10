@@ -9,3 +9,4 @@ include 'cors-2'
 
 include 'oauth2client'
 include 'oauth2client-2'
+include 'oauth2client-3'

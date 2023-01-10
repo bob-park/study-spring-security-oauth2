@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Insert title here</title>
+  <script>
+
+  </script>
+</head>
+<body>
+
+<div>
+  Welcome
+  <div>authentication : <span th:text="${authenticationToken}"/></div>
+  <br />
+  <div>AccessToken : <span th:text="${accessToken}"/></div>
+  <br/>
+  <div>RefreshToken <span th:text="${refreshToken}"/></div>
+
+</div>
+
+
+<!--<div sec:authorize="isAuthenticated()">-->
+<a th:href="@{/logout}">Logout</a>
+<!--</div>-->
+
+</body>
+</html>
