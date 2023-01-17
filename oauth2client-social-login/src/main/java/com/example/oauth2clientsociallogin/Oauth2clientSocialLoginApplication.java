@@ -1,0 +1,13 @@
+package com.example.oauth2clientsociallogin;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Oauth2clientSocialLoginApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Oauth2clientSocialLoginApplication.class, args);
+    }
+
+}
