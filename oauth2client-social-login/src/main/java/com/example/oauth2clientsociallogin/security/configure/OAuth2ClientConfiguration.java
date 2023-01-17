@@ -1,16 +1,26 @@
 package com.example.oauth2clientsociallogin.security.configure;
 
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.example.oauth2clientsociallogin.security.service.CustomOAuth2UserService;
+import com.example.oauth2clientsociallogin.security.service.CustomOidcUserService;
+
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class OAuth2ClientConfiguration {
+
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOidcUserService customOidcUserService;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -27,14 +37,26 @@ public class OAuth2ClientConfiguration {
     @Bean
     public SecurityFilterChain http(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authRequest ->
-            authRequest.antMatchers("/").permitAll()
+            authRequest
+                .antMatchers("/api/user").hasAnyRole("SCOPE_profile", "SCOPE_email")
+                .antMatchers("/api/oidc").hasAnyRole("SCOPE_openid")
+                .antMatchers("/").permitAll()
                 .anyRequest().authenticated());
 
-        http.oauth2Login(Customizer.withDefaults());
+        http.oauth2Login(oauth2 ->
+            oauth2.userInfoEndpoint(endpoint ->
+                endpoint
+                    .userService(customOAuth2UserService)
+                    .oidcUserService(customOidcUserService)));
 
         http.logout().logoutSuccessUrl("/");
 
         return http.build();
+    }
+
+    @Bean
+    public GrantedAuthoritiesMapper customAuthorityMapper(){
+        return new CustomAuthorityMapper();
     }
 
 }

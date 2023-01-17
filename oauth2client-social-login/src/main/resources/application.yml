@@ -25,8 +25,8 @@ spring:
               - email
               - openid
           naver:
-            client-id: PyqTi2mMDkpj2i9Y22z4
-            client-secret: kSKrKX7XYO
+            client-id: TtEpAyh6zwAjArZK_J0X
+            client-secret: Fuvztfq18E
             authorization-grant-type: authorization_code
             client-name: naver-client-app
             redirect-uri: http://localhost:8081/login/oauth2/code/naver
