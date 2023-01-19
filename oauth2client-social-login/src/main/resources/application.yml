@@ -12,21 +12,21 @@ spring:
             authorization-grant-type: authorization_code
             client-id: oauth2-client-app
             client-name: oauth2-client-app
-            client-secret: X3fGojFQlwZqQY4wwMCnzfSAqCdKSxfk
+            client-secret: ${keycloak_client_secret}
             redirect-uri: http://localhost:8081/login/oauth2/code/keycloak
             scope:
               - profile
               - email
           google:
             client-id: 981130426132-vehqshe61jmod15vkkns9t3flm3r4q2s.apps.googleusercontent.com
-            client-secret: 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
+            client-secret: ${google_client_secret}
             scope:
               - profile
               - email
               - openid
           naver:
             client-id: TtEpAyh6zwAjArZK_J0X
-            client-secret: Fuvztfq18E
+            client-secret: ${naver_client_secret}
             authorization-grant-type: authorization_code
             client-name: naver-client-app
             redirect-uri: http://localhost:8081/login/oauth2/code/naver

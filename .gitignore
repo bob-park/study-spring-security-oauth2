@@ -48,3 +48,4 @@ out/
 *.generated.override.yml
 *-debug.yml
 *-debug
+/oauth2client-social-login/src/main/resources/application-dev.yml
