@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.example.oauth2clientsociallogin.security.converters.ProviderUserRequest;
+import com.example.oauth2clientsociallogin.security.model.PrincipalUser;
 import com.example.oauth2clientsociallogin.security.model.ProviderUser;
 
 @Service
@@ -31,6 +32,6 @@ public class CustomOAuth2UserService
         // 회원가입
         super.register(providerUser, userRequest);
 
-        return oAuth2User;
+        return new PrincipalUser(providerUser);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import com.example.oauth2clientsociallogin.security.service.CustomOAuth2UserService;
 import com.example.oauth2clientsociallogin.security.service.CustomOidcUserService;
@@ -43,6 +44,12 @@ public class OAuth2ClientConfiguration {
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated());
 
+        http.formLogin()
+            .loginPage("/login")
+            .loginProcessingUrl("/loginProc")
+            .defaultSuccessUrl("/")
+            .permitAll();
+
         http.oauth2Login(oauth2 ->
             oauth2.userInfoEndpoint(endpoint ->
                 endpoint
@@ -51,11 +58,14 @@ public class OAuth2ClientConfiguration {
 
         http.logout().logoutSuccessUrl("/");
 
+        http.exceptionHandling(exception ->
+            exception.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")));
+
         return http.build();
     }
 
     @Bean
-    public GrantedAuthoritiesMapper customAuthorityMapper(){
+    public GrantedAuthoritiesMapper customAuthorityMapper() {
         return new CustomAuthorityMapper();
     }
 

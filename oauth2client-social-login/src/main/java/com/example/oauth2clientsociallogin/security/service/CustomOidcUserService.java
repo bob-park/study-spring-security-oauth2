@@ -9,15 +9,29 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
 import com.example.oauth2clientsociallogin.security.converters.ProviderUserRequest;
+import com.example.oauth2clientsociallogin.security.model.PrincipalUser;
 import com.example.oauth2clientsociallogin.security.model.ProviderUser;
 
 @Service
-public class CustomOidcUserService extends AbstractOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
+public class CustomOidcUserService extends AbstractOAuth2UserService implements
+    OAuth2UserService<OidcUserRequest, OidcUser> {
 
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
 
         ClientRegistration clientRegistration = userRequest.getClientRegistration();
+
+        // ! oidc 의 user-name-attribute 가 기본적으로 sub 이다.
+        clientRegistration = ClientRegistration.withClientRegistration(clientRegistration)
+            .userNameAttributeName("sub")
+            .build();
+
+        userRequest =
+            new OidcUserRequest(clientRegistration,
+                userRequest.getAccessToken(),
+                userRequest.getIdToken(),
+                userRequest.getAdditionalParameters());
+
         OAuth2UserService<OidcUserRequest, OidcUser> oidc2UserService = new OidcUserService();
 
         OidcUser oidcUser = oidc2UserService.loadUser(userRequest);
@@ -29,7 +43,6 @@ public class CustomOidcUserService extends AbstractOAuth2UserService implements 
         // 회원가입
         super.register(providerUser, userRequest);
 
-
-        return oidcUser;
+        return new PrincipalUser(providerUser);
     }
 }

@@ -37,12 +37,14 @@ spring:
             client-id: df8f588c8fb293ee38ecdc51ce854763
             client-secret: ${kakao_client_secret}
             authorization-grant-type: authorization_code
+            client-authentication-method: post
             client-name: oauth2-exam-app
             redirect-uri: http://localhost:8081/login/oauth2/code/kakao
             scope:
               - openid
-              - profile
-              - email
+              - profile_nickname
+              - profile_image
+              - account_email
         provider:
           keycloak:
             authorization-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/auth

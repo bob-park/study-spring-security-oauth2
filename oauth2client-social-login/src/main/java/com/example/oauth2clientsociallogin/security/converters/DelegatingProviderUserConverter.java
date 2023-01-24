@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import com.example.oauth2clientsociallogin.security.model.ProviderUser;
 import com.example.oauth2clientsociallogin.security.social.google.converter.OAuth2GoogleProviderUserConverter;
+import com.example.oauth2clientsociallogin.security.social.kakao.converter.OAuth2KakaoOidcProviderUserConverter;
+import com.example.oauth2clientsociallogin.security.social.kakao.converter.OAuth2KakaoProviderUserConverter;
 import com.example.oauth2clientsociallogin.security.social.naver.converter.OAuth2NaverProviderUserConverter;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -17,9 +19,11 @@ public class DelegatingProviderUserConverter implements ProviderUserConverter<Pr
 
     public DelegatingProviderUserConverter() {
         this.converters =
-            List.of(
+            List.of(new UserDetailsProviderUserConverter(),
                 new OAuth2GoogleProviderUserConverter(),
-                new OAuth2NaverProviderUserConverter());
+                new OAuth2NaverProviderUserConverter(),
+                new OAuth2KakaoProviderUserConverter(),
+                new OAuth2KakaoOidcProviderUserConverter());
     }
 
     @Override

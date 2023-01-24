@@ -21,4 +21,9 @@ public class KeycloakUser extends OAuth2ProviderUser {
     public String getUsername() {
         return (String) getAttributes().get("preferred_username");
     }
+
+    @Override
+    public String getPicture() {
+        return null;
+    }
 }
