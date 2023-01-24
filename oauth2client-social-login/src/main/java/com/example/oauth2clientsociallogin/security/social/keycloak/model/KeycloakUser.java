@@ -1,4 +1,4 @@
-package com.example.oauth2clientsociallogin.keycloak.model;
+package com.example.oauth2clientsociallogin.security.social.keycloak.model;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.user.OAuth2User;

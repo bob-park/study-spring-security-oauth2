@@ -10,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.example.oauth2clientsociallogin.security.service.AbstractOAuth2UserService;
-
 import static com.example.oauth2clientsociallogin.security.service.AbstractOAuth2UserService.NAVER;
 
 @Controller

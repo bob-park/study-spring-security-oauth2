@@ -5,13 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import com.example.oauth2clientsociallogin.google.model.GoogleUser;
-import com.example.oauth2clientsociallogin.keycloak.model.KeycloakUser;
-import com.example.oauth2clientsociallogin.naver.model.NaverUser;
+import com.example.oauth2clientsociallogin.security.converters.ProviderUserConverter;
+import com.example.oauth2clientsociallogin.security.converters.ProviderUserRequest;
 import com.example.oauth2clientsociallogin.security.model.ProviderUser;
 import com.example.oauth2clientsociallogin.security.model.User;
 import com.example.oauth2clientsociallogin.security.repository.UserRepository;
@@ -28,25 +25,12 @@ public abstract class AbstractOAuth2UserService {
 
     private UserRepository userRepository;
     private UserService userService;
+    private ProviderUserConverter<ProviderUserRequest, ProviderUser> providerUserConverter;
 
-    protected ProviderUser providerUser(ClientRegistration clientRegistration, OAuth2User oAuth2User) {
 
-        String registrationId = clientRegistration.getRegistrationId();
+    protected ProviderUser providerUser(ProviderUserRequest providerUserRequest) {
 
-        switch (registrationId) {
-
-            case KEYCLOAK:
-                return new KeycloakUser(oAuth2User, clientRegistration);
-
-            case GOOGLE:
-                return new GoogleUser(oAuth2User, clientRegistration);
-
-            case NAVER:
-                return new NaverUser(oAuth2User, clientRegistration);
-
-            default:
-                return null;
-        }
+        return providerUserConverter.converter(providerUserRequest);
 
     }
 
@@ -71,5 +55,11 @@ public abstract class AbstractOAuth2UserService {
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setProviderUserConverter(
+        ProviderUserConverter<ProviderUserRequest, ProviderUser> providerUserConverter) {
+        this.providerUserConverter = providerUserConverter;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
+import com.example.oauth2clientsociallogin.security.converters.ProviderUserRequest;
 import com.example.oauth2clientsociallogin.security.model.ProviderUser;
 
 @Service
@@ -21,7 +22,9 @@ public class CustomOidcUserService extends AbstractOAuth2UserService implements 
 
         OidcUser oidcUser = oidc2UserService.loadUser(userRequest);
 
-        ProviderUser providerUser = super.providerUser(clientRegistration, oidcUser);
+        ProviderUserRequest providerUserRequest = new ProviderUserRequest(clientRegistration, oidcUser);
+
+        ProviderUser providerUser = super.providerUser(providerUserRequest);
 
         // 회원가입
         super.register(providerUser, userRequest);

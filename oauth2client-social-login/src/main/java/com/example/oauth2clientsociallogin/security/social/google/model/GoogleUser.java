@@ -1,15 +1,16 @@
-package com.example.oauth2clientsociallogin.google.model;
+package com.example.oauth2clientsociallogin.security.social.google.model;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import com.example.oauth2clientsociallogin.security.model.Attributes;
 import com.example.oauth2clientsociallogin.security.model.OAuth2ProviderUser;
 
 public class GoogleUser extends OAuth2ProviderUser {
 
 
-    public GoogleUser(OAuth2User oAuth2User, ClientRegistration clientRegistration) {
-        super(oAuth2User.getAttributes(), oAuth2User, clientRegistration);
+    public GoogleUser(Attributes attributes, OAuth2User oAuth2User, ClientRegistration clientRegistration) {
+        super(attributes.getMainAttributes(), oAuth2User, clientRegistration);
 
     }
 

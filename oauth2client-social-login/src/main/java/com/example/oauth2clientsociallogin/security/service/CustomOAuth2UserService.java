@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.example.oauth2clientsociallogin.security.converters.ProviderUserRequest;
 import com.example.oauth2clientsociallogin.security.model.ProviderUser;
 
 @Service
@@ -23,7 +24,9 @@ public class CustomOAuth2UserService
         OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
 
-        ProviderUser providerUser = super.providerUser(clientRegistration, oAuth2User);
+        ProviderUserRequest providerUserRequest = new ProviderUserRequest(clientRegistration, oAuth2User);
+
+        ProviderUser providerUser = super.providerUser(providerUserRequest);
 
         // 회원가입
         super.register(providerUser, userRequest);
