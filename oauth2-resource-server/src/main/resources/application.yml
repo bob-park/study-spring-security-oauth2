@@ -13,7 +13,6 @@ spring:
           jws-algorithms:
             - RS512
 
-
 management:
   endpoint:
     health:
