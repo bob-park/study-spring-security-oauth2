@@ -2,6 +2,7 @@ package com.example.oauth2resourceserververify;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import static com.example.oauth2resourceserververify.JWKTest.jwk;
 import static com.example.oauth2resourceserververify.MacTest.hmac;
 import static com.example.oauth2resourceserververify.MessageDigestUtils.messageDigest;
 import static com.example.oauth2resourceserververify.RSATest.rsa;
@@ -14,9 +15,11 @@ public class Oauth2ResourceServerVerifyApplication {
 
 //        messageDigest("Spring Security");
 //        signature("Spring Security");
-        hmac("Spring Security");
-        rsa("Spring Security");
+//        hmac("Spring Security");
+//        rsa("Spring Security");
 //		SpringApplication.run(Oauth2ResourceServerVerifyApplication.class, args);
+
+        jwk();
 
     }
 
