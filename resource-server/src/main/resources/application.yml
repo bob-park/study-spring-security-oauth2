@@ -2,6 +2,14 @@
 server:
   port: 8081
 
+## spring
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jws-algorithms: HS256
+
 ## logging
 logging:
   pattern:
