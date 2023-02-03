@@ -6,16 +6,28 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.jwk.JWK;
 import io.oauth2.resourceserver.model.LoginRequest;
+import io.oauth2.resourceserver.signature.SecuritySigner;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+    private final SecuritySigner securitySigner;
+    private final JWK jwk;
+
+    public JwtAuthenticationFilter(SecuritySigner securitySigner, JWK jwk) {
+        this.securitySigner = securitySigner;
+        this.jwk = jwk;
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -42,9 +54,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
         Authentication authResult) throws IOException, ServletException {
 
-        SecurityContextHolder.getContext().setAuthentication(authResult);
+        User user = (User) authResult.getPrincipal();
 
-        // 인증 후 토큰 발행
-        getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
+        // 토큰 발행
+        ;
+        try {
+            String jwt = securitySigner.getToken(user, jwk);
+
+            response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
+        } catch (JOSEException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
