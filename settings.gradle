@@ -13,3 +13,5 @@ include 'oauth2client-3'
 include 'oauth2client-social-login'
 include 'oauth2-resource-server'
 include 'oauth2-resource-server-verify'
+
+include 'resource-server'
