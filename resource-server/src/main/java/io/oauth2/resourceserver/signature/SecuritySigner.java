@@ -3,7 +3,6 @@ package io.oauth2.resourceserver.signature;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,15 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.KeyLengthException;
-import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
 public abstract class SecuritySigner {
 
-    protected String getJwtTokenInternal(MACSigner jwsSigner, UserDetails user, JWK jwk) throws JOSEException {
+    protected String getJwtTokenInternal(JWSSigner jwsSigner, UserDetails user, JWK jwk) throws JOSEException {
 
         JWSHeader header =
             new JWSHeader.Builder((JWSAlgorithm) jwk.getAlgorithm())
