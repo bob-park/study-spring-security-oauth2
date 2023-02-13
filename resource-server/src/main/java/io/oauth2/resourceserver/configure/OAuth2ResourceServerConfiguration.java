@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -26,6 +27,7 @@ import io.oauth2.resourceserver.filter.authentication.JwtAuthenticationFilter;
 import io.oauth2.resourceserver.filter.authorization.JwtAuthorizationFilter;
 import io.oauth2.resourceserver.filter.authorization.JwtAuthorizationMacFilter;
 import io.oauth2.resourceserver.filter.authorization.JwtAuthorizationRsaFilter;
+import io.oauth2.resourceserver.filter.authorization.JwtAuthorizationRsaPublicKeyFilter;
 import io.oauth2.resourceserver.signature.SecuritySigner;
 
 @RequiredArgsConstructor
@@ -46,8 +48,9 @@ public class OAuth2ResourceServerConfiguration {
         http.addFilterBefore(jwtAuthenticationFilter(null, null), UsernamePasswordAuthenticationFilter.class);
 //        http.addFilterBefore(jwtAuthorizationMacFilter(null), UsernamePasswordAuthenticationFilter.class);
 //        http.addFilterBefore(jwtAuthorizationRsaFilter(null), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthorizationRsaPublicKeyFilter(null), UsernamePasswordAuthenticationFilter.class);
 
-        http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+//        http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 
         return http.build();
     }
@@ -60,6 +63,11 @@ public class OAuth2ResourceServerConfiguration {
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationRsaFilter(RSAKey rsaKey) throws JOSEException {
         return new JwtAuthorizationRsaFilter(rsaKey);
+    }
+
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationRsaPublicKeyFilter(JwtDecoder jwtDecoder){
+        return new JwtAuthorizationRsaPublicKeyFilter(jwtDecoder);
     }
 
     @Bean

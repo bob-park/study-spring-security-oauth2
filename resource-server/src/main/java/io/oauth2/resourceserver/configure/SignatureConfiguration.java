@@ -11,6 +11,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.OctetSequenceKeyGenerator;
 import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
 import io.oauth2.resourceserver.signature.mac.MacSecuritySigner;
+import io.oauth2.resourceserver.signature.rsa.RsaPublicKeySecuritySinger;
 import io.oauth2.resourceserver.signature.rsa.RsaSecuritySinger;
 
 @Configuration
@@ -29,7 +30,7 @@ public class SignatureConfiguration {
             .generate();
     }
 
-    @Primary
+    //    @Primary
     @Bean
     public RsaSecuritySinger rsaSecuritySinger() {
         return new RsaSecuritySinger();
@@ -43,6 +44,12 @@ public class SignatureConfiguration {
             .keyID("rsaKey")
             .algorithm(JWSAlgorithm.RS512)
             .generate();
+    }
+
+    @Primary
+    @Bean
+    public RsaPublicKeySecuritySinger rsaPublicKeySecuritySinger() {
+        return new RsaPublicKeySecuritySinger();
     }
 
 }

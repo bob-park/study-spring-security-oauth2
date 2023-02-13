@@ -9,6 +9,7 @@ spring:
       resourceserver:
         jwt:
           jws-algorithms: RS512
+          public-key-location: classpath:certs/publicKey.txt
 
 ## logging
 logging:
