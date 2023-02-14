@@ -21,3 +21,4 @@ logging:
     web: debug
     com:
       example: debug
+    io.oauth2.resourceserver: debug
