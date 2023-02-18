@@ -10,6 +10,8 @@ import org.springframework.security.oauth2.server.resource.introspection.NimbusO
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.example.resourceserveropaque.instrospector.CustomOpaqueTokenIntrospector;
+
 @Configuration
 public class OAuth2ResourceServerConfiguration {
 
@@ -20,7 +22,7 @@ public class OAuth2ResourceServerConfiguration {
         return http.build();
     }
 
-    @Bean
+    //    @Bean
     public OpaqueTokenIntrospector opaqueTokenIntrospector(OAuth2ResourceServerProperties properties) {
         Opaquetoken opaquetoken = properties.getOpaquetoken();
 
@@ -28,6 +30,11 @@ public class OAuth2ResourceServerConfiguration {
             opaquetoken.getIntrospectionUri(),
             opaquetoken.getClientId(),
             opaquetoken.getClientSecret());
+    }
+
+    @Bean
+    public OpaqueTokenIntrospector customOpaqueTokenIntrospector(OAuth2ResourceServerProperties properties) {
+        return new CustomOpaqueTokenIntrospector(properties);
     }
 
 
