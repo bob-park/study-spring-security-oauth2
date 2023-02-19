@@ -17,3 +17,6 @@ include 'oauth2-resource-server-verify'
 include 'resource-server'
 include 'resource-server-authorization'
 include 'resource-server-opaque'
+
+include 'oauth2-client-server'
+include 'oauth2-client-resource-server'

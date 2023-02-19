@@ -1,0 +1,17 @@
+## server
+server:
+  port: 8082
+
+## spring
+spring:
+  security:
+    oauth2:
+
+## logging
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:%-5p} ${PID} --- [%15.15t] %-40.40logger{39} :%06L : %m%n"
+  level:
+    root: info
+    web: debug
+    com.example: debug
