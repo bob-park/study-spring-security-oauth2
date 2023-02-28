@@ -20,3 +20,5 @@ include 'resource-server-opaque'
 
 include 'oauth2-client-server'
 include 'oauth2-client-resource-server'
+
+include 'oauth2-authorization-01'
