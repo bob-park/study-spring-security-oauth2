@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -32,12 +33,16 @@ public class OAuth2AuthorizationServerConfiguration01 {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         // 2. OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(..) 호출 -- 공식문서에서 사용
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+//        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
         // 3. 사용자 정의
-//        OAuth2AuthorizationServerConfigurer authorizationServerConfiguration = new OAuth2AuthorizationServerConfigurer();
+        OAuth2AuthorizationServerConfigurer authorizationServerConfiguration = new OAuth2AuthorizationServerConfigurer();
 
-//        http.apply(authorizationServerConfiguration);
+        //! 기본적으로 oidc 가 disabled 되어 있음
+        // /userinfo 에 대한 request matcher 가 oidc 에 들어있음
+        authorizationServerConfiguration.oidc(Customizer.withDefaults());
+
+        http.apply(authorizationServerConfiguration);
 
         return http.build();
     }
