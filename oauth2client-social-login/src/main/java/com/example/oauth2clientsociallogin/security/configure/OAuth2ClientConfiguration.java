@@ -27,7 +27,7 @@ public class OAuth2ClientConfiguration {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web ->
             web.ignoring()
-                .antMatchers(
+                .requestMatchers(
                     "/static/js/**",
                     "/static/images/**",
                     "/static/css/**",
@@ -39,9 +39,9 @@ public class OAuth2ClientConfiguration {
     public SecurityFilterChain http(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authRequest ->
             authRequest
-                .antMatchers("/api/user").hasAnyRole("SCOPE_profile", "SCOPE_email")
-                .antMatchers("/api/oidc").hasAnyRole("SCOPE_openid")
-                .antMatchers("/").permitAll()
+                .requestMatchers("/api/user").hasAnyRole("SCOPE_profile", "SCOPE_email")
+                .requestMatchers("/api/oidc").hasAnyRole("SCOPE_openid")
+                .requestMatchers("/").permitAll()
                 .anyRequest().authenticated());
 
         http.formLogin()

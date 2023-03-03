@@ -23,3 +23,4 @@ include 'oauth2-client-resource-server'
 
 include 'oauth2-authorization-01'
 include 'oauth2-authorization-02'
+include 'oauth2-authorization-03'
