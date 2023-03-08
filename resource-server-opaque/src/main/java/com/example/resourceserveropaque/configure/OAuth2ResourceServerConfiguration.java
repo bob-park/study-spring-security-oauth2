@@ -22,7 +22,7 @@ public class OAuth2ResourceServerConfiguration {
         return http.build();
     }
 
-    //    @Bean
+    @Bean
     public OpaqueTokenIntrospector opaqueTokenIntrospector(OAuth2ResourceServerProperties properties) {
         Opaquetoken opaquetoken = properties.getOpaquetoken();
 
@@ -32,7 +32,6 @@ public class OAuth2ResourceServerConfiguration {
             opaquetoken.getClientSecret());
     }
 
-    @Bean
     public OpaqueTokenIntrospector customOpaqueTokenIntrospector(OAuth2ResourceServerProperties properties) {
         return new CustomOpaqueTokenIntrospector(properties);
     }

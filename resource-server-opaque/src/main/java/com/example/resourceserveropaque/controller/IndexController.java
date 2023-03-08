@@ -33,4 +33,14 @@ public class IndexController {
         return authentication;
     }
 
+    @GetMapping("introspect")
+    public OpaqueDto introspect(Authentication authentication,
+        @AuthenticationPrincipal OAuth2AuthenticatedPrincipal principal){
+        BearerTokenAuthentication tokenAuthentication = (BearerTokenAuthentication) authentication;
+
+        Map<String, Object> tokenAttributes = tokenAuthentication.getTokenAttributes();
+
+        return new OpaqueDto((boolean) tokenAttributes.get("active"), authentication, principal);
+    }
+
 }
