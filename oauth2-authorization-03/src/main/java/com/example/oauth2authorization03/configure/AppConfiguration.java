@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -51,7 +52,8 @@ public class AppConfiguration {
                     methods.addAll(
                         List.of(
                             ClientAuthenticationMethod.CLIENT_SECRET_BASIC,
-                            ClientAuthenticationMethod.CLIENT_SECRET_POST)))
+                            ClientAuthenticationMethod.CLIENT_SECRET_POST,
+                            ClientAuthenticationMethod.NONE)))
                 .authorizationGrantTypes(grantTypes ->
                     grantTypes.addAll(
                         List.of(
@@ -68,6 +70,10 @@ public class AppConfiguration {
                 .clientSettings(
                     ClientSettings.builder()
                         .requireAuthorizationConsent(true) // 사용자 정보 승인 및 동의 요구 설정
+                        .build())
+                .tokenSettings(
+                    TokenSettings.builder()
+                        .reuseRefreshTokens(false)
                         .build())
                 .build();
 

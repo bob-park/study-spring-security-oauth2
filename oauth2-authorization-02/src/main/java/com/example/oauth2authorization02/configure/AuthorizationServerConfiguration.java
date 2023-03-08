@@ -93,7 +93,7 @@ public class AuthorizationServerConfiguration {
                             AuthorizationGrantType.AUTHORIZATION_CODE,
                             AuthorizationGrantType.REFRESH_TOKEN,
                             AuthorizationGrantType.CLIENT_CREDENTIALS)))
-                .redirectUri("http://127.0.0.1:8081") // redirect URI 는 반드시 IP 형태여야한다. localhost 인 경우 차단해버린다고 한다.
+                .redirectUri("http://127.0.0.1:9000") // redirect URI 는 반드시 IP 형태여야한다. localhost 인 경우 차단해버린다고 한다.
                 .scopes(scopes ->
                     scopes.addAll(
                         List.of(
