@@ -1,5 +1,6 @@
 package com.example.oauth2authorization03.configure;
 
+import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,6 +23,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.example.oauth2authorization03.provider.CustomAuthenticationProvider;
 
@@ -68,6 +73,8 @@ public class AuthorizationServerConfiguration {
             .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
             .apply(authorizationServerConfigurer);
 
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
         http.exceptionHandling(
             exception ->
                 exception.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")));
@@ -88,6 +95,38 @@ public class AuthorizationServerConfiguration {
         OAuth2AuthorizationConsentService oAuth2AuthorizationConsentService) {
         return new CustomAuthenticationProvider(registeredClientRepository, oAuth2AuthorizationService,
             oAuth2AuthorizationConsentService);
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3_600L);
+        configuration.setExposedHeaders(
+            List.of(
+                HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
+                HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,
+                HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,
+                HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS,
+                HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD,
+                HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
+                HttpHeaders.AUTHORIZATION,
+                HttpHeaders.CONTENT_TYPE,
+                HttpHeaders.CONTENT_DISPOSITION,
+                HttpHeaders.CONTENT_LENGTH,
+                HttpHeaders.ORIGIN,
+                HttpHeaders.ACCEPT));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 
 }
