@@ -65,6 +65,10 @@ public class AppConfiguration {
                     scopes.addAll(
                         List.of(
                             OidcScopes.OPENID,
+                            OidcScopes.EMAIL,
+                            OidcScopes.PHONE,
+                            OidcScopes.PROFILE,
+                            OidcScopes.ADDRESS,
                             "read",
                             "write")))
                 .clientSettings(
