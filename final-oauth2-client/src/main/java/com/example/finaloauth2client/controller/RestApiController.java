@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.nimbusds.oauth2.sdk.token.AccessToken;
+import org.example.model.AccessToken;
 
 @RequiredArgsConstructor
 @RestController
@@ -44,7 +44,7 @@ public class RestApiController {
     public Map<String, Object> tokenExpire(AccessToken accessToken) {
 
         HttpHeaders header = new HttpHeaders();
-        header.add("Authorization", "Bearer " + accessToken.getValue());
+        header.add("Authorization", "Bearer " + accessToken.token());
         HttpEntity<?> entity = new HttpEntity<>(header);
         String url = "http://localhost:8082/tokenExpire";
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(url, HttpMethod.GET, entity,

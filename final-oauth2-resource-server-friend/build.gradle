@@ -3,4 +3,6 @@ dependencies {
     implementation 'org.springframework.security:spring-security-test'
 
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    implementation project(':final-oauth2-core')
 }

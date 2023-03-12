@@ -68,9 +68,6 @@ subprojects {
         annotationProcessor 'org.projectlombok:lombok'
         testCompileOnly 'org.projectlombok:lombok'
         testAnnotationProcessor 'org.projectlombok:lombok'
-
-        implementation project(':final-oauth2-core')
-
     }
 
     test {
