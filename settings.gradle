@@ -29,3 +29,5 @@ include 'final-oauth2-authorization-server'
 include 'final-oauth2-resource-server-album'
 include 'final-oauth2-resource-server-friend'
 include 'final-oauth2-client'
+include 'final-oauth2-core'
+

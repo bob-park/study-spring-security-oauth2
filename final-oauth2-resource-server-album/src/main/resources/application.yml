@@ -1,10 +1,15 @@
 ## server
-
+server:
+  port: 8082
 
 ## spring
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
 
-
-## logging
 ## logging
 logging:
   pattern:
