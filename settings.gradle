@@ -24,3 +24,8 @@ include 'oauth2-client-resource-server'
 include 'oauth2-authorization-01'
 include 'oauth2-authorization-02'
 include 'oauth2-authorization-03'
+
+include 'final-oauth2-authorization-server'
+include 'final-oauth2-resource-server-album'
+include 'final-oauth2-resource-server-friend'
+include 'final-oauth2-client'
