@@ -28,6 +28,10 @@ public class AuthorizationServerConfiguration {
 
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
 
+        authorizationServerConfigurer.authorizationEndpoint(
+            authorization ->
+                authorization.consentPage("/oauth2/consent"));
+
         http
             .securityMatcher(endpointsMatcher)
             .authorizeHttpRequests(authorize ->
